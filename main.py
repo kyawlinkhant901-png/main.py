@@ -1,9 +1,10 @@
+import os
 import telebot
 import google.generativeai as genai
 
-# မိမိရရှိထားသော Token များ ထည့်ရန်နေရာ
-TELEGRAM_TOKEN = "မင်းရဲ့_TELEGRAM_BOT_TOKEN_ကိုဒီမှာထည့်ပါ"
-GEMINI_API_KEY = "မင်းရဲ့_GEMINI_API_KEY_ကိုဒီမှာထည့်ပါ"
+# ကွန်ပျူတာစနစ် (Environment) ထဲကနေ လျှို့ဝှက်ဖတ်ခိုင်းမယ့်ပုံစံ ပြောင်းလဲခြင်း
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 # AI Setup
 genai.configure(api_key=GEMINI_API_KEY)
@@ -15,7 +16,6 @@ bot = telebot.TeleBot(TELEGRAM_TOKEN)
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
     try:
-        # AI ထံမှ အဖြေတောင်းခြင်း
         response = model.generate_content(message.text)
         bot.reply_to(message, response.text)
     except Exception as e:
